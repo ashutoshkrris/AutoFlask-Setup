@@ -55,10 +55,10 @@ class TestingConfig(Config):
 
 ENV_FILE_CONTENT = """\
 APP_SETTINGS=config.DevelopmentConfig
-SECRET_KEY=TFP5U-4QJFayXuAG83-^vhcPCwf??jt5Z@CU9zXxy&5@F2A!n3y%hVmVAnMNBSLh$Tj9YZb73e7sBh6KeXCGRDSc9z&fBt4v
-DATABASE_URL=sqlite:///app.db
-EMAIL_ADDRESS=youremail@gmail.com
-EMAIL_PASSWORD=verystrongpassword
+SECRET_KEY="TFP5U-4QJFayXuAG83-^vhcPCwf??jt5Z@CU9zXxy&5@F2A!n3y%hVmVAnMNBSLh$Tj9YZb73e7sBh6KeXCGRDSc9z&fBt4v"
+DATABASE_URL="sqlite:///app.db"
+EMAIL_ADDRESS="youremail@gmail.com"
+EMAIL_PASSWORD="verystrongpassword"
 """
 
 GITIGNORE_FILE_CONTENT = """\
@@ -155,12 +155,20 @@ def help_menu():
         print("{: >40}        {: >40}".format(*command))
     
 
+def no_op():
+    print('\nAutoFlask-Setup can help you set up a new Flask Project, right from creating virtual environment to '
+          'creating Procfile for deployment.\nAutoFlask-Setup(v1.0.0, Oct 20 2021, 8:25:39)'
+          '\nAdd arguments like "help", "copyright", "credits" or "license" for more information.\n')
+
+
 def copyright():
     print("\nCopyright (c) 2021 Ashutosh Krishna\n All Rights Reserved.")
 
 
 def credits():
-    print("\nThanks to Pallets Projects for the continuously developing Flask. See www.flask.palletsprojects.com/en/2.0.x/ for more information.\nThanks to Python Software Foundation for continuously developing Python. See www.python.org for more information.")
+    print("\nThanks to Pallets Projects for the continuously developing Flask. See "
+          "www.flask.palletsprojects.com/en/2.0.x/ for more information.\nThanks to Python Software Foundation for "
+          "continuously developing Python. See www.python.org for more information.")
 
 
 def license():
@@ -277,19 +285,19 @@ def initialize_project():
     print("Please run 'python setup.py help' for necessary commands.")
 
 
+# This allows for a more future-proof design.
+# Adding commands is easier, and more efficient
+COMMANDS = {
+    "help": help_menu,
+    "credits": credits,
+    "license": license,
+    "copyright": copyright,
+    "initproject": initialize_project
+}
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        arg = sys.argv[1]
-        if arg == "help":
-            help_menu()
-        elif arg == "copyright":
-            copyright()
-        elif arg == "credits":
-            credits()
-        elif arg == "license":
-            license()
-        elif arg == "initproject":
-            initialize_project()
+        command = COMMANDS.get(sys.argv[1], no_op)
+        command()
     else:
-        print('\nAutoFlask-Setup can help you set up a new Flask Project, right from creating virtual environment to creating Procfile for deployment.\nAutoFlask-Setup(v1.0.0, Oct 20 2021, 8:25:39)\nAdd arguments like "help", "copyright", "credits" or "license" for more information.')
+        no_op()
