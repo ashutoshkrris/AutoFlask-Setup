@@ -3,6 +3,7 @@ import sys
 import pathlib
 import platform
 import subprocess
+import secrets
 
 
 MAIN_FILE_CONTENT = """\
@@ -53,9 +54,9 @@ class TestingConfig(Config):
     TESTING = True
 """
 
-ENV_FILE_CONTENT = """\
+ENV_FILE_CONTENT = f"""\
 APP_SETTINGS=config.DevelopmentConfig
-SECRET_KEY="TFP5U-4QJFayXuAG83-^vhcPCwf??jt5Z@CU9zXxy&5@F2A!n3y%hVmVAnMNBSLh$Tj9YZb73e7sBh6KeXCGRDSc9z&fBt4v"
+SECRET_KEY="{secrets.token_hex(24)}"
 DATABASE_URL="sqlite:///app.db"
 EMAIL_ADDRESS="youremail@gmail.com"
 EMAIL_PASSWORD="verystrongpassword"
